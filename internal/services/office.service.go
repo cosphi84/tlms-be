@@ -16,6 +16,7 @@ type OfficeService interface {
 	CreateOffice(req dto.CreateOfficeRequest, ctx context.Context) error
 	GetOffices(pagination *dto.PaginationRequest) (*dto.PaginationResponse, error)
 	GetOfficeOptions() ([]dto.OfficeOptionResponse, error)
+	GetOffice(id int64) (*models.Office, error)
 	UpdateOffice(id int64, req dto.UpdateOfficeRequest, ctx context.Context) error
 	DeleteOffice(id int64, ctx context.Context) error
 }
@@ -62,7 +63,7 @@ func (s *officeService) CreateOffice(req dto.CreateOfficeRequest, ctx context.Co
 		return err
 	}
 	if existing != nil {
-		return errors.New("office with that code already exists")
+		return errors.New("office is exists")
 	}
 
 	parent, err := s.officeRepo.FindById(req.ParentID)
@@ -91,6 +92,10 @@ func (s *officeService) GetOffices(pagination *dto.PaginationRequest) (*dto.Pagi
 
 func (s *officeService) GetOfficeOptions() ([]dto.OfficeOptionResponse, error) {
 	return s.officeRepo.FindOffices()
+}
+
+func (s *officeService) GetOffice(id int64) (*models.Office, error) {
+	return s.officeRepo.FindById(id)
 }
 
 func (s *officeService) UpdateOffice(id int64, req dto.UpdateOfficeRequest, ctx context.Context) error {

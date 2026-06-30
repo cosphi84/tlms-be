@@ -20,6 +20,7 @@ func RegisterOfficeRoutes(rg *gin.RouterGroup, config OfficeRouteConfig) {
 		offices.POST("", config.OfficeHandler.Create)
 		offices.GET("", config.OfficeHandler.FindAll)
 		offices.GET("/options", config.OfficeHandler.FindOptions)
+		offices.GET("/:id", config.OfficeHandler.GetOffice)
 		offices.PUT("/:id", config.OfficeHandler.Update)
 		offices.DELETE("/:id", config.OfficeHandler.Delete)
 	}

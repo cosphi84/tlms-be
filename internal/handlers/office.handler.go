@@ -79,6 +79,26 @@ func (h *OfficeHandler) FindOptions(c *gin.Context) {
 	c.JSON(http.StatusOK, opts)
 }
 
+// GetOffice godoc
+// @Summary      Get single office record
+// @Tags         office
+// @Produce      json
+// @Success      200  {array}  models.office
+// @Router       /offices/{id} [get]
+func (h *OfficeHandler) GetOffice(c *gin.Context) {
+	id, err := parseIDParam(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid id parameter"})
+		return
+	}
+	office, err := h.officeService.GetOffice(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, office)
+}
+
 // Update godoc
 // @Summary      Update an existing office (partial update supported)
 // @Tags         offices

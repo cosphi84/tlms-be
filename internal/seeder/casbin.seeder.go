@@ -28,12 +28,14 @@ func InitCasbinSeed(autz *auth.Service, db *gorm.DB) error {
 		autz.GrantPermission(string(role), "/offices/options", "GET")
 		autz.GrantPermission(string(role), "/offices", "POST")
 		autz.GrantPermission(string(role), "/offices/:id", "PUT")
+		autz.GrantPermission(string(role), "/offices/:id", "GET")
 		autz.GrantPermission(string(role), "/offices/:id", "DELETE")
 	}
 
 	for _, role := range readRoles {
 		autz.GrantPermission(string(role), "/offices", "GET")
 		autz.GrantPermission(string(role), "/offices/options", "GET")
+		autz.GrantPermission(string(role), "/offices/:id", "GET")
 	}
 
 	return nil
