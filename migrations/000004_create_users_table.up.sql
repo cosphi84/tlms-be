@@ -14,9 +14,12 @@ CREATE TABLE users (
 
                      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
                      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+                    deleted_at TIMESTAMPZ NULL,
 
                      created_by BIGINT NULL REFERENCES users(id),
-                     updated_by BIGINT NULL REFERENCES users(id)
+                     updated_by BIGINT NULL REFERENCES users(id),
+                    deleted_by BIGINT NULL REFERENCES users(id)
+
 );
 
 CREATE INDEX idx_users_email ON users(email);

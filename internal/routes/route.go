@@ -34,11 +34,20 @@ func SetupRoutes(router *gin.Engine, app *bootstraps.App) {
 		})
 	})
 
+	// Authenticate
 	AuthenticateRoute(api, AuthenticateRouteConfig{
 		authHandler: app.AuthenticateHandler,
 	})
+
+	// Office Management
 	RegisterOfficeRoutes(api, OfficeRouteConfig{
 		OfficeHandler: app.OfficeHandler,
 		Authz:         app.Authz,
+	})
+
+	// Users Management
+	RegisterUserRoutes(api, UserRouteConfig{
+		UserHandler: app.UserHandler,
+		Autz:        app.Authz,
 	})
 }

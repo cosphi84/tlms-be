@@ -13,6 +13,7 @@ type App struct {
 	Authz               *auth.Service
 	AuthenticateHandler *handlers.AuthenticateHandler
 	OfficeHandler       *handlers.OfficeHandler
+	UserHandler         *handlers.UserHandler
 }
 
 func NewApp(db *gorm.DB) *App {
@@ -26,6 +27,7 @@ func NewApp(db *gorm.DB) *App {
 
 	InitAuthenticateModule(app, db)
 	InitOfficeModule(app, db)
+	InitUserModule(app, db)
 
 	return app
 }
