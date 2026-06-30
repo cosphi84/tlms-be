@@ -34,3 +34,7 @@ func (s *Service) GrantPermission(role, obj, act string) (bool, error) {
 func (s *Service) RevokePermission(role, obj, act string) (bool, error) {
 	return s.e.RemovePolicy(role, obj, act)
 }
+
+func (s *Service) GetRoleForUser(email string) ([]string, error) {
+	return s.e.GetRolesForUser(email)
+}

@@ -9,17 +9,18 @@ import (
 )
 
 type OfficeRouteConfig struct {
-	officeHandler *handlers.OfficeHandler
+	OfficeHandler *handlers.OfficeHandler
+	Authz         *auth.Service
 }
 
 func RegisterOfficeRoutes(rg *gin.RouterGroup, config OfficeRouteConfig) {
 	offices := rg.Group("/offices")
-	offices.Use(middleware.Authenticate(), middleware.Authorize(&auth.Service{}))
+	offices.Use(middleware.Authenticate(), middleware.Authorize(config.Authz))
 	{
-		offices.POST("", config.officeHandler.Create)
-		offices.GET("", config.officeHandler.FindAll)
-		offices.GET("/options", config.officeHandler.FindOptions)
-		offices.PUT("/:id", config.officeHandler.Update)
-		offices.DELETE("/:id", config.officeHandler.Delete)
+		offices.POST("", config.OfficeHandler.Create)
+		offices.GET("", config.OfficeHandler.FindAll)
+		offices.GET("/options", config.OfficeHandler.FindOptions)
+		offices.PUT("/:id", config.OfficeHandler.Update)
+		offices.DELETE("/:id", config.OfficeHandler.Delete)
 	}
 }

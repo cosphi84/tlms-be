@@ -1,18 +1,28 @@
 package bootstraps
 
 import (
+	"tlms/internal/auth"
 	"tlms/internal/handlers"
 
+	"github.com/casbin/casbin/v3"
 	"gorm.io/gorm"
 )
 
 type App struct {
+	Enforcer            *casbin.Enforcer
+	Authz               *auth.Service
 	AuthenticateHandler *handlers.AuthenticateHandler
 	OfficeHandler       *handlers.OfficeHandler
 }
 
 func NewApp(db *gorm.DB) *App {
 	app := &App{}
+	enforcer, err := auth.NewEnforcer(db)
+	if err != nil {
+		panic(err)
+	}
+	app.Enforcer = enforcer
+	app.Authz = auth.NewService(enforcer)
 
 	InitAuthenticateModule(app, db)
 	InitOfficeModule(app, db)

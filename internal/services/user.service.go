@@ -15,10 +15,17 @@ type UserService interface {
 
 type userService struct {
 	userRepo repositories.UserRepository
+	authz    *auth.Service
 }
 
-func NewUserService(userRepo repositories.UserRepository) UserService {
-	return &userService{userRepo: userRepo}
+func NewUserService(
+	userRepo repositories.UserRepository,
+	authz *auth.Service,
+) UserService {
+	return &userService{
+		userRepo: userRepo,
+		authz:    authz,
+	}
 }
 
 func (s *userService) Create(usr *dto.CreateUserDTO) error {
@@ -44,7 +51,15 @@ func (s *userService) Create(usr *dto.CreateUserDTO) error {
 		Image:    &usr.Image,
 	}
 
-	return s.userRepo.Create(&user)
+	if err := s.userRepo.Create(&user); err != nil {
+		return err
+	}
+
+	_, err = s.authz.GrantRole(user.Email, usr.Role)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *userService) FindByEmail(email string) (*models.User, error) {

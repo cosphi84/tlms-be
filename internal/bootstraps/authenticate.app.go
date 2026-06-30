@@ -10,6 +10,6 @@ import (
 
 func InitAuthenticateModule(app *App, db *gorm.DB) {
 	userRepos := repositories.NewUserRepository(db)
-	authService := services.NewAuthenticateService(userRepos)
+	authService := services.NewAuthenticateService(app.Authz, userRepos)
 	app.AuthenticateHandler = handlers.NewAuthenticateHandler(authService)
 }

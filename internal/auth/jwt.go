@@ -7,7 +7,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func GenerateTokenPair(UserID int64, OfficeID int64, Role RoleType) (string, string, error) {
+func GenerateTokenPair(UserID int64, OfficeID int64, Role []RoleType) (string, string, error) {
 	secret := os.Getenv("JWT_SECRET")
 	if secret == "" {
 		panic("JWT_SECRET environment variable is not set")

@@ -6,13 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func InitCasbinSeed(db *gorm.DB) error {
-	enforcer, err := auth.NewEnforcer(db)
-	if err != nil {
-		return err
-	}
-
-	authService := auth.NewService(enforcer)
+func InitCasbinSeed(autz *auth.Service, db *gorm.DB) error {
 
 	// Admin Roles
 	adminRoles := []auth.RoleType{
@@ -30,16 +24,16 @@ func InitCasbinSeed(db *gorm.DB) error {
 	}
 
 	for _, role := range adminRoles {
-		authService.GrantPermission(string(role), "/offices", "GET")
-		authService.GrantPermission(string(role), "/offices/options", "GET")
-		authService.GrantPermission(string(role), "/offices", "POST")
-		authService.GrantPermission(string(role), "/offices/:id", "PUT")
-		authService.GrantPermission(string(role), "/offices/:id", "DELETE")
+		autz.GrantPermission(string(role), "/offices", "GET")
+		autz.GrantPermission(string(role), "/offices/options", "GET")
+		autz.GrantPermission(string(role), "/offices", "POST")
+		autz.GrantPermission(string(role), "/offices/:id", "PUT")
+		autz.GrantPermission(string(role), "/offices/:id", "DELETE")
 	}
 
 	for _, role := range readRoles {
-		authService.GrantPermission(string(role), "/offices", "GET")
-		authService.GrantPermission(string(role), "/offices/options", "GET")
+		autz.GrantPermission(string(role), "/offices", "GET")
+		autz.GrantPermission(string(role), "/offices/options", "GET")
 	}
 
 	return nil

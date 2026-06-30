@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"tlms/internal/bootstraps"
 	"tlms/internal/database"
 	"tlms/internal/seeder"
 
@@ -16,7 +17,20 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if err = seeder.SeedData(db); err != nil {
+	app := bootstraps.NewSeedApp(db)
+
+	// seed Office
+	if err := seeder.InitOfficeSeed(db); err != nil {
+		log.Fatal(err)
+	}
+
+	// seed casbin
+	if err = seeder.InitCasbinSeed(app.Authz, db); err != nil {
+		log.Fatal(err)
+	}
+
+	// seed user admin
+	if err = seeder.InitUserAdmin(app, db); err != nil {
 		log.Fatal(err)
 	}
 

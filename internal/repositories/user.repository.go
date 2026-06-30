@@ -48,7 +48,7 @@ func (r *userRepository) FindByID(id int32) (*models.User, error) {
 func (r *userRepository) FindByEmail(email string) (*models.User, error) {
 	var user models.User
 	err := r.db.
-		//Preload("Office").
+		Preload("Office").
 		Where("email = ?", email).
 		First(&user).Error
 

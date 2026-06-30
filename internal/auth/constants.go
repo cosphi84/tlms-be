@@ -16,10 +16,10 @@ const (
 )
 
 type JWTClaims struct {
-	UserID    int64    `json:"user_id"`
-	Role      RoleType `json:"role"`
-	OfficeID  int64    `json:"office_id"`
-	TokenType string   `json:"token_type"`
+	UserID    int64      `json:"user_id"`
+	Role      []RoleType `json:"role"`
+	OfficeID  int64      `json:"office_id"`
+	TokenType string     `json:"token_type"`
 
 	jwt.RegisteredClaims
 }

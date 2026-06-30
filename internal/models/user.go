@@ -13,8 +13,7 @@ type User struct {
 	Image *string `gorm:"type:text" json:"image,omitempty"`
 
 	OfficeID int64 `gorm:"type:integer;not null;index:idx_users_office_id" json:"office_id"`
-
-	IsActive bool `gorm:"not null;default:true;index:idx_users_is_active" json:"is_active"`
+	IsActive bool  `gorm:"not null;default:true;index:idx_users_is_active" json:"is_active"`
 
 	FailedLoginAttempts int `gorm:"not null;default:0" json:"failed_login_attempts"`
 

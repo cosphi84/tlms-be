@@ -2,7 +2,6 @@ package services
 
 import (
 	"errors"
-	"log"
 	"os"
 	"time"
 	"tlms/internal/auth"
@@ -20,50 +19,60 @@ type AuthenticateService interface {
 
 type authenticateService struct {
 	userRepo repositories.UserRepository
+	authz    *auth.Service
 }
 
-func NewAuthenticateService(userRepo repositories.UserRepository) AuthenticateService {
+func NewAuthenticateService(authz *auth.Service, userRepo repositories.UserRepository) AuthenticateService {
 	return &authenticateService{
 		userRepo: userRepo,
+		authz:    authz,
 	}
 }
 
 func (s *authenticateService) Authenticate(req *dto.LoginRequest, ip string) (*dto.LoginResponse, error) {
 	maxLoginAttempts := 3
 	lockoutDuration := 1 // in hours
-	lockUntil := time.Now().Add(time.Duration(lockoutDuration) * time.Hour)
-
 	usr, err := s.userRepo.FindByEmail(req.Email)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, errors.New("user not found")
+			return nil, errors.New("invalid credentials")
 		}
 		return nil, err
 	}
 
 	if !usr.IsActive {
-		return nil, errors.New("user is inactive")
-	}
-
-	if usr.LockedUntil != nil && usr.LockedUntil.After(time.Now()) {
-		return nil, errors.New("account is locked. please try again later")
-	}
-
-	log.Printf("Authenticating user: %s from IP: %s", req.Email, ip)
-
-	valid := auth.VerifyPassword(req.Password, usr.Password)
-	if !valid {
-		nTry := usr.FailedLoginAttempts + 1
-		if nTry >= maxLoginAttempts {
-			usr.LockedUntil = &lockUntil
-		}
-
-		usr.FailedLoginAttempts = nTry
-		_ = s.userRepo.Update(usr)
 		return nil, errors.New("invalid credentials")
 	}
 
 	now := time.Now()
+	if usr.LockedUntil != nil {
+		if now.Before(*usr.LockedUntil) {
+			return nil, errors.New("account locked")
+		}
+
+		usr.LockedUntil = nil
+		usr.FailedLoginAttempts = 0
+	}
+
+	valid := auth.VerifyPassword(req.Password, usr.Password)
+	if !valid {
+		nTry := usr.FailedLoginAttempts + 1
+
+		usr.FailedLoginAttempts = nTry
+		if nTry >= maxLoginAttempts {
+			lockedUntil := time.Now().Add(time.Duration(lockoutDuration) * time.Hour)
+			usr.LockedUntil = &lockedUntil
+			usr.FailedLoginAttempts = 0
+		}
+
+		err = s.userRepo.Update(usr)
+
+		if err != nil {
+			return nil, err
+		}
+		return nil, errors.New("invalid credentials")
+	}
+
 	usr.LastLoginFrom = &ip
 	usr.LastLoginAt = &now
 	usr.FailedLoginAttempts = 0
@@ -71,7 +80,12 @@ func (s *authenticateService) Authenticate(req *dto.LoginRequest, ip string) (*d
 
 	_ = s.userRepo.Update(usr)
 
-	accessToken, refreshToken, err := auth.GenerateTokenPair(usr.ID, usr.OfficeID, "")
+	usrRolesRaw, _ := s.authz.GetRoleForUser(usr.Email)
+	usrRoles := make([]auth.RoleType, len(usrRolesRaw))
+	for i, r := range usrRolesRaw {
+		usrRoles[i] = auth.RoleType(r)
+	}
+	accessToken, refreshToken, err := auth.GenerateTokenPair(usr.ID, usr.OfficeID, usrRoles)
 	if err != nil {
 		return nil, err
 	}
