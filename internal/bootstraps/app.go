@@ -9,11 +9,12 @@ import (
 )
 
 type App struct {
-	Enforcer            *casbin.Enforcer
-	Authz               *auth.Service
-	AuthenticateHandler *handlers.AuthenticateHandler
-	OfficeHandler       *handlers.OfficeHandler
-	UserHandler         *handlers.UserHandler
+	Enforcer               *casbin.Enforcer
+	Authz                  *auth.Service
+	AuthenticateHandler    *handlers.AuthenticateHandler
+	OfficeHandler          *handlers.OfficeHandler
+	UserHandler            *handlers.UserHandler
+	StorageLocationHandler *handlers.StorageLocationHandler
 }
 
 func NewApp(db *gorm.DB) *App {
@@ -28,6 +29,7 @@ func NewApp(db *gorm.DB) *App {
 	InitAuthenticateModule(app, db)
 	InitOfficeModule(app, db)
 	InitUserModule(app, db)
+	InitSlocModule(app, db)
 
 	return app
 }

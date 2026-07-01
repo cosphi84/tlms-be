@@ -50,4 +50,10 @@ func SetupRoutes(router *gin.Engine, app *bootstraps.App) {
 		UserHandler: app.UserHandler,
 		Autz:        app.Authz,
 	})
+
+	// Storage Loc
+	RegisterStorageLocationRoutes(api, StorageLocationRouteConfig{
+		SlocHandler: app.StorageLocationHandler,
+		Authz:       app.Authz,
+	})
 }

@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"net/http"
-	"strconv"
 	"tlms/internal/dto"
+	"tlms/internal/helpers"
 	"tlms/internal/services"
 
 	"github.com/gin-gonic/gin"
@@ -34,7 +34,7 @@ func (h *OfficeHandler) Create(c *gin.Context) {
 	}
 
 	if err := h.officeService.CreateOffice(req, c.Request.Context()); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -52,7 +52,7 @@ func (h *OfficeHandler) Create(c *gin.Context) {
 // @Success      200  {object}  dto.PaginationResponse
 // @Router       /offices [get]
 func (h *OfficeHandler) FindAll(c *gin.Context) {
-	pagination := parsePaginationQuery(c)
+	pagination := helpers.ParsePaginationQuery(c)
 
 	result, err := h.officeService.GetOffices(pagination)
 	if err != nil {
@@ -86,7 +86,7 @@ func (h *OfficeHandler) FindOptions(c *gin.Context) {
 // @Success      200  {array}  models.office
 // @Router       /offices/{id} [get]
 func (h *OfficeHandler) GetOffice(c *gin.Context) {
-	id, err := parseIDParam(c)
+	id, err := helpers.ParseIDParam(c)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid id parameter"})
 		return
@@ -111,7 +111,7 @@ func (h *OfficeHandler) GetOffice(c *gin.Context) {
 // @Failure      404  {object}  map[string]string
 // @Router       /offices/{id} [put]
 func (h *OfficeHandler) Update(c *gin.Context) {
-	id, err := parseIDParam(c)
+	id, err := helpers.ParseIDParam(c)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid office id"})
 		return
@@ -145,7 +145,7 @@ func (h *OfficeHandler) Update(c *gin.Context) {
 // @Failure      404  {object}  map[string]string
 // @Router       /offices/{id} [delete]
 func (h *OfficeHandler) Delete(c *gin.Context) {
-	id, err := parseIDParam(c)
+	id, err := helpers.ParseIDParam(c)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid office id"})
 		return
@@ -161,21 +161,4 @@ func (h *OfficeHandler) Delete(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "office deleted successfully"})
-}
-
-// --- helpers ---
-
-func parsePaginationQuery(c *gin.Context) *dto.PaginationRequest {
-	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
-	limit, _ := strconv.Atoi(c.DefaultQuery("limit", "10"))
-	return &dto.PaginationRequest{
-		Page:     page,
-		Limit:    limit,
-		SortedBy: c.DefaultQuery("sorted_by", "created_at"),
-		SortDir:  c.DefaultQuery("sort_dir", "desc"),
-	}
-}
-
-func parseIDParam(c *gin.Context) (int64, error) {
-	return strconv.ParseInt(c.Param("id"), 10, 64)
 }
