@@ -56,4 +56,10 @@ func SetupRoutes(router *gin.Engine, app *bootstraps.App) {
 		SlocHandler: app.StorageLocationHandler,
 		Authz:       app.Authz,
 	})
+
+	// File Manager
+	RegisterFileRoutes(api, FileRouteConfig{
+		FileHandler: app.FileHandler,
+		Authz:       app.Authz,
+	})
 }
