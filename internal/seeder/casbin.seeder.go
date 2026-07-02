@@ -46,6 +46,13 @@ func InitCasbinSeed(autz *auth.Service, db *gorm.DB) error {
 		autz.GrantPermission(string(role), "/files/:uuid", "GET")
 		autz.GrantPermission(string(role), "/files/:uuid/download", "GET")
 		autz.GrantPermission(string(role), "/files/:uuid", "DELETE")
+
+		// tools
+		autz.GrantPermission(string(role), "/tools", "GET")
+		autz.GrantPermission(string(role), "/tools", "POST")
+		autz.GrantPermission(string(role), "/tools/:id", "GET")
+		autz.GrantPermission(string(role), "/tools/:id", "PUT")
+		autz.GrantPermission(string(role), "/tools/:id", "DELETE")
 	}
 
 	for _, role := range readRoles {
@@ -60,6 +67,10 @@ func InitCasbinSeed(autz *auth.Service, db *gorm.DB) error {
 		// filemanager
 		autz.GrantPermission(string(role), "/files/:uuid", "GET")
 		autz.GrantPermission(string(role), "/files/:uuid/download", "GET")
+
+		// tools
+		autz.GrantPermission(string(role), "/tools", "GET")
+		autz.GrantPermission(string(role), "/tools/:id", "GET")
 	}
 
 	return nil

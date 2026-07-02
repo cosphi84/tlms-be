@@ -62,4 +62,10 @@ func SetupRoutes(router *gin.Engine, app *bootstraps.App) {
 		FileHandler: app.FileHandler,
 		Authz:       app.Authz,
 	})
+
+	// Tools Manager
+	RegisterToolRoutes(api, ToolRouteConfig{
+		ToolHandler: app.ToolHandler,
+		Authz:       app.Authz,
+	})
 }

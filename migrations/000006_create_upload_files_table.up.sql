@@ -1,5 +1,3 @@
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
-
 CREATE TABLE upload_files (
               id BIGSERIAL PRIMARY KEY,
               uuid UUID NOT NULL DEFAULT gen_random_uuid(),

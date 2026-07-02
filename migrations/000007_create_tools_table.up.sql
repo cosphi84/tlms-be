@@ -14,7 +14,7 @@ CREATE TABLE tools (
             )
           ),
       price NUMERIC(18,2) NOT NULL DEFAULT 0,
-      photo_url TEXT NULL,
+      photo_id BIGINT NULL REFERENCES upload_files(id),
       is_active BOOLEAN NOT NULL DEFAULT TRUE,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       updated_at TIMESTAMPTZ NULL,
@@ -31,3 +31,9 @@ CREATE INDEX idx_tools_name
 
 CREATE INDEX idx_tools_category
   ON tools(category);
+
+CREATE INDEX idx_tools_photo_id
+  ON tools(photo_id);
+
+CREATE INDEX idx_tools_is_active
+ON tools(is_active);
