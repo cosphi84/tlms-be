@@ -8,14 +8,16 @@ import (
 	"tlms/internal/dto"
 	"tlms/internal/models"
 	"tlms/internal/repositories"
+
+	"github.com/google/uuid"
 )
 
 type ToolsService interface {
 	Create(req *dto.RegisterToolRequest, ctx context.Context) error
-	Update(id int64, req *dto.RegisterToolRequest, ctx context.Context) error
-	FindById(id int64) (*models.Tools, error)
+	Update(id uuid.UUID, req *dto.RegisterToolRequest, ctx context.Context) error
+	FindById(id uuid.UUID) (*models.Tools, error)
 	FindAll(pagination *dto.PaginationRequest) (*dto.PaginationResponse, error)
-	Delete(id int64) error
+	Delete(id uuid.UUID) error
 }
 
 type toolsService struct {
@@ -53,7 +55,7 @@ func (s *toolsService) Create(req *dto.RegisterToolRequest, ctx context.Context)
 
 	return s.toolsRepos.Create(&tool)
 }
-func (s *toolsService) Update(id int64, req *dto.RegisterToolRequest, ctx context.Context) error {
+func (s *toolsService) Update(id uuid.UUID, req *dto.RegisterToolRequest, ctx context.Context) error {
 	usr, err := auth.GetClaims(ctx)
 	if err != nil {
 		return errors.New("invalid claims")
@@ -79,13 +81,13 @@ func (s *toolsService) Update(id int64, req *dto.RegisterToolRequest, ctx contex
 	return s.toolsRepos.Update(tool)
 
 }
-func (s *toolsService) FindById(id int64) (*models.Tools, error) {
+func (s *toolsService) FindById(id uuid.UUID) (*models.Tools, error) {
 	return s.toolsRepos.FindById(id)
 }
 func (s *toolsService) FindAll(pagination *dto.PaginationRequest) (*dto.PaginationResponse, error) {
 	return s.toolsRepos.FindAll(pagination)
 }
-func (s *toolsService) Delete(id int64) error {
+func (s *toolsService) Delete(id uuid.UUID) error {
 	tool, err := s.FindById(id)
 	if err != nil {
 		return err

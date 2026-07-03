@@ -68,4 +68,10 @@ func SetupRoutes(router *gin.Engine, app *bootstraps.App) {
 		ToolHandler: app.ToolsHandler,
 		Authz:       app.Authz,
 	})
+
+	// stock manager
+	RegisterStockToolRoutes(api, StockToolsRouteConfig{
+		StockToolHandler: app.StockToolHandler,
+		Authz:            app.Authz,
+	})
 }

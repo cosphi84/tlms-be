@@ -5,10 +5,15 @@ import (
 	"tlms/internal/dto"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 func GetIDFromParam(c *gin.Context) (int64, error) {
 	return strconv.ParseInt(c.Param("id"), 10, 64)
+}
+
+func GetUuidFromParam(c *gin.Context) (uuid.UUID, error) {
+	return uuid.Parse(c.Param("id"))
 }
 
 func ParsePaginationQuery(c *gin.Context) *dto.PaginationRequest {

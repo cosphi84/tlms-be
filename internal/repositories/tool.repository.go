@@ -16,7 +16,7 @@ type ToolsRepository interface {
 	FindById(id uuid.UUID) (*models.Tools, error)
 	FindByCode(code string) (*models.Tools, error)
 	FindAll(request *dto.PaginationRequest) (*dto.PaginationResponse, error)
-	Delete(id int64) error
+	Delete(id uuid.UUID) error
 }
 
 type toolsRepository struct {
@@ -67,6 +67,6 @@ func (r *toolsRepository) FindAll(pagination *dto.PaginationRequest) (*dto.Pagin
 		Order(fmt.Sprintf("%s %s", pagination.SortedBy, pagination.SortDir))
 	return Paginate(&tools, pagination, query)
 }
-func (r *toolsRepository) Delete(id int64) error {
+func (r *toolsRepository) Delete(id uuid.UUID) error {
 	return r.db.Delete(&models.Tools{}, "id = ?", id).Error
 }

@@ -13,7 +13,7 @@ type StockToolsRouteConfig struct {
 	Authz            *auth.Service
 }
 
-func RegisterStockToolRoutes(r *gin.RouterGroup, cfg *StockToolsRouteConfig) {
+func RegisterStockToolRoutes(r *gin.RouterGroup, cfg StockToolsRouteConfig) {
 	stockTools := r.Group("/stock-tools")
 	stockTools.Use(middleware.Authenticate(), middleware.Authorize(cfg.Authz))
 	{

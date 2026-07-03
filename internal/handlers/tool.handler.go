@@ -31,7 +31,7 @@ func (h *ToolsHandler) GetAllTools(c *gin.Context) {
 }
 
 func (h *ToolsHandler) GetTool(c *gin.Context) {
-	id, err := helpers.ParseIDParam(c)
+	id, err := helpers.GetUuidFromParam(c)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		c.Abort()
@@ -65,7 +65,7 @@ func (h *ToolsHandler) RegisterTool(c *gin.Context) {
 }
 
 func (h *ToolsHandler) UpdateTool(c *gin.Context) {
-	id, err := helpers.ParseIDParam(c)
+	id, err := helpers.GetUuidFromParam(c)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		c.Abort()
@@ -89,7 +89,7 @@ func (h *ToolsHandler) UpdateTool(c *gin.Context) {
 }
 
 func (h *ToolsHandler) DeleteTool(c *gin.Context) {
-	id, err := helpers.ParseIDParam(c)
+	id, err := helpers.GetUuidFromParam(c)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		c.Abort()
