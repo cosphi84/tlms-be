@@ -65,7 +65,7 @@ func SetupRoutes(router *gin.Engine, app *bootstraps.App) {
 
 	// Tools Manager
 	RegisterToolRoutes(api, ToolRouteConfig{
-		ToolHandler: app.ToolHandler,
+		ToolHandler: app.ToolsHandler,
 		Authz:       app.Authz,
 	})
 }

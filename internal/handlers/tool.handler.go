@@ -96,7 +96,7 @@ func (h *ToolsHandler) DeleteTool(c *gin.Context) {
 		return
 	}
 
-	if err := h.toolService.Delete(id, c.Request.Context()); err != nil {
+	if err := h.toolService.Delete(id); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		c.Abort()
 		return

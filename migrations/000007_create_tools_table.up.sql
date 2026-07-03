@@ -14,8 +14,12 @@ CREATE TABLE tools (
             )
           ),
       price NUMERIC(18,2) NOT NULL DEFAULT 0,
+      usage_period INTEGER NOT NULL DEFAULT 1,
+      usage_period_unit VARCHAR(4) DEFAULT 'Y'
+                   CHECK ( usage_period IN ('Y', 'M', 'W', 'D') ),
       photo_id BIGINT NULL REFERENCES upload_files(id),
       is_active BOOLEAN NOT NULL DEFAULT TRUE,
+
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       updated_at TIMESTAMPTZ NULL,
       deleted_at TIMESTAMPTZ NULL,

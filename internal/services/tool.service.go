@@ -15,7 +15,7 @@ type ToolsService interface {
 	Update(id int64, req *dto.RegisterToolRequest, ctx context.Context) error
 	FindById(id int64) (*models.Tools, error)
 	FindAll(pagination *dto.PaginationRequest) (*dto.PaginationResponse, error)
-	Delete(id int64, ctx context.Context) error
+	Delete(id int64) error
 }
 
 type toolsService struct {
@@ -85,7 +85,7 @@ func (s *toolsService) FindById(id int64) (*models.Tools, error) {
 func (s *toolsService) FindAll(pagination *dto.PaginationRequest) (*dto.PaginationResponse, error) {
 	return s.toolsRepos.FindAll(pagination)
 }
-func (s *toolsService) Delete(id int64, ctx context.Context) error {
+func (s *toolsService) Delete(id int64) error {
 	tool, err := s.FindById(id)
 	if err != nil {
 		return err

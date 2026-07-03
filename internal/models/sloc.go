@@ -22,7 +22,7 @@ type StorageLocation struct {
 	DeletedBy *int64         `gorm:"column:deleted_by" json:"deleted_by,omitempty"`
 
 	// Relations
-	Office        Office `gorm:"foreignKey:OfficeID" json:"office"`
+	Office        Office `gorm:"foreignKey:OfficeID" json:"office,omitempty"`
 	CreatedByUser *User  `gorm:"foreignKey:CreatedBy" json:"created_by_user,omitempty"`
 	UpdatedByUser *User  `gorm:"foreignKey:UpdatedBy" json:"updated_by_user,omitempty"`
 	DeletedByUser *User  `gorm:"foreignKey:DeletedBy" json:"deleted_by_user,omitempty"`

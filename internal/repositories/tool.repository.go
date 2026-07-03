@@ -6,13 +6,14 @@ import (
 	"tlms/internal/dto"
 	"tlms/internal/models"
 
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
 type ToolsRepository interface {
 	Create(tool *models.Tools) error
 	Update(data *models.Tools) error
-	FindById(id int64) (*models.Tools, error)
+	FindById(id uuid.UUID) (*models.Tools, error)
 	FindByCode(code string) (*models.Tools, error)
 	FindAll(request *dto.PaginationRequest) (*dto.PaginationResponse, error)
 	Delete(id int64) error
@@ -33,7 +34,7 @@ func (r *toolsRepository) Create(data *models.Tools) error {
 func (r *toolsRepository) Update(data *models.Tools) error {
 	return r.db.Updates(data).Error
 }
-func (r *toolsRepository) FindById(id int64) (*models.Tools, error) {
+func (r *toolsRepository) FindById(id uuid.UUID) (*models.Tools, error) {
 	var tool models.Tools
 	err := r.db.Preload("PhotoTool").
 		Where("id = ?", id).

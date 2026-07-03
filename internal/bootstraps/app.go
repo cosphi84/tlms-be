@@ -17,6 +17,7 @@ type App struct {
 	StorageLocationHandler *handlers.StorageLocationHandler
 	FileHandler            *handlers.FileHandler
 	ToolsHandler           *handlers.ToolsHandler
+	StockToolHandler       *handlers.StockToolHandler
 }
 
 func NewApp(db *gorm.DB) *App {
@@ -34,5 +35,7 @@ func NewApp(db *gorm.DB) *App {
 	InitSlocModule(app, db)
 	InitFileModule(app, db)
 	InitToolsModule(app, db)
+	InitStockToolModule(app, db)
+
 	return app
 }
