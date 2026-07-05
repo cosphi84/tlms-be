@@ -18,7 +18,13 @@ func main() {
 	if port == "" {
 		panic("APP_PORT is not set")
 	}
-
+	ginMode := os.Getenv("GIN_MODE")
+	if ginMode == "release" {
+		gin.SetMode(gin.ReleaseMode)
+	} else {
+		gin.SetMode(gin.DebugMode)
+	}
+	
 	db, err := database.Connect()
 	if err != nil {
 		log.Fatal(err)
