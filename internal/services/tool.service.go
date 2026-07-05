@@ -13,7 +13,7 @@ import (
 )
 
 type ToolsService interface {
-	Create(req *dto.RegisterToolRequest, ctx context.Context) error
+	Create(req *dto.RegisterToolRequest, ctx context.Context) (*dto.ToolsResponse, error)
 	Update(id uuid.UUID, req *dto.RegisterToolRequest, ctx context.Context) error
 	FindById(id uuid.UUID) (*models.Tools, error)
 	FindAll(pagination *dto.PaginationRequest) (*dto.PaginationResponse, error)
@@ -28,20 +28,38 @@ func NewToolsService(toolRepos repositories.ToolsRepository) ToolsService {
 	return &toolsService{toolsRepos: toolRepos}
 }
 
-func (s *toolsService) Create(req *dto.RegisterToolRequest, ctx context.Context) error {
+func bindToResponse(m *models.Tools) *dto.ToolsResponse {
+	return &dto.ToolsResponse{
+		ID:              m.ID,
+		Name:            m.Name,
+		Code:            m.Code,
+		Description:     m.Description,
+		Brand:           m.Brand,
+		Category:        m.Category,
+		PhotoID:         m.PhotoID,
+		UsagePeriod:     m.UsagePeriod,
+		UsagePeriodUnit: m.UsagePeriodUnit,
+		CreatedAt:       m.CreatedAt,
+		CreatedBy:       m.CreatedBy,
+		UpdatedAt:       m.UpdatedAt,
+		UpdatedBy:       m.UpdatedBy,
+	}
+}
+
+func (s *toolsService) Create(req *dto.RegisterToolRequest, ctx context.Context) (*dto.ToolsResponse, error) {
 	usr, err := auth.GetClaims(ctx)
 	if err != nil {
-		return errors.New("invalid claims")
+		return nil, errors.New("invalid claims")
 	}
 	existing, err := s.toolsRepos.FindByCode(req.Code)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	if existing != nil {
-		return errors.New("code already exists")
+		return nil, errors.New("code already exists")
 	}
 
-	tool := models.Tools{
+	tool := &models.Tools{
 		Code:        req.Code,
 		Name:        req.Name,
 		Description: &req.Description,
@@ -53,7 +71,10 @@ func (s *toolsService) Create(req *dto.RegisterToolRequest, ctx context.Context)
 		IsActive:    true,
 	}
 
-	return s.toolsRepos.Create(&tool)
+	if err := s.toolsRepos.Create(tool); err != nil {
+		return nil, err
+	}
+	return bindToResponse(tool), nil
 }
 func (s *toolsService) Update(id uuid.UUID, req *dto.RegisterToolRequest, ctx context.Context) error {
 	usr, err := auth.GetClaims(ctx)

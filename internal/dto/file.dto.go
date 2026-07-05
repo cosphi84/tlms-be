@@ -18,6 +18,7 @@ type FileUploadRequest struct {
 // hanya perlu tahu UUID dan URL untuk akses file, sesuai requirement
 // "module lain hanya menyimpan file_id, URL dibentuk oleh File Service".
 type FileResponse struct {
+	ID           int64     `json:"id"`
 	UUID         string    `json:"uuid"`
 	OriginalName string    `json:"original_name"`
 	MimeType     string    `json:"mime_type"`

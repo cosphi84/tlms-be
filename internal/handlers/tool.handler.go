@@ -56,12 +56,13 @@ func (h *ToolsHandler) RegisterTool(c *gin.Context) {
 		return
 	}
 
-	if err := h.toolService.Create(&req, c.Request.Context()); err != nil {
+	tool, err := h.toolService.Create(&req, c.Request.Context())
+	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		c.Abort()
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "tool created"})
+	c.JSON(http.StatusOK, tool)
 }
 
 func (h *ToolsHandler) UpdateTool(c *gin.Context) {

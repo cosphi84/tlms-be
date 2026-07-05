@@ -61,6 +61,7 @@ func buildPath(folder, fileUUID, ext string) string {
 
 func toFileResponse(m *models.UploadFile) *dto.FileResponse {
 	return &dto.FileResponse{
+		ID:           m.ID,
 		UUID:         m.UUID,
 		OriginalName: m.OriginalName,
 		MimeType:     m.MimeType,
