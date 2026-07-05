@@ -15,8 +15,8 @@ CREATE TABLE IF NOT EXISTS casbin_rule
     updated_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE INDEX idx_casbin_ptype
+CREATE INDEX IF NOT EXISTS idx_casbin_ptype
 ON casbin_rule(ptype);
 
-CREATE INDEX idx_casbin_lookup
+CREATE INDEX IF NOT EXISTS idx_casbin_lookup
 ON casbin_rule(ptype,v0,v1,v2);

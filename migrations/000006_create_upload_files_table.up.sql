@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS upload_files (
               deleted_by BIGINT NULL REFERENCES users(id)
 );
 
-CREATE UNIQUE INDEX idx_upload_files_uuid ON upload_files(uuid);
-CREATE INDEX idx_upload_files_checksum ON upload_files(checksum);
-CREATE INDEX idx_upload_files_is_archived ON upload_files(is_archived);
-CREATE INDEX idx_upload_files_deleted_at ON upload_files(deleted_at);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_upload_files_uuid ON upload_files(uuid);
+CREATE INDEX IF NOT EXISTS idx_upload_files_checksum ON upload_files(checksum);
+CREATE INDEX IF NOT EXISTS idx_upload_files_is_archived ON upload_files(is_archived);
+CREATE INDEX IF NOT EXISTS idx_upload_files_deleted_at ON upload_files(deleted_at);

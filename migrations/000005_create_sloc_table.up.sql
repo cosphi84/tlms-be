@@ -12,5 +12,5 @@ CREATE TABLE IF NOT EXISTS storage_locations (
     deleted_by BIGINT NULL REFERENCES users(id)
 );
 
-CREATE INDEX idx_storage_locs_code ON storage_locations(code);
-CREATE INDEX idx_storage_locs_office_id ON storage_locations(office_id);
+CREATE INDEX IF NOT EXISTS idx_storage_locs_code ON storage_locations(code);
+CREATE INDEX IF NOT EXISTS idx_storage_locs_office_id ON storage_locations(office_id);

@@ -31,8 +31,8 @@ CREATE TABLE IF NOT EXISTS stock_tools (
           UNIQUE(tool_id, storage_loc_id)
 );
 
-CREATE INDEX idx_stock_tools_id
+CREATE INDEX IF NOT EXISTS idx_stock_tools_id
   ON stock_tools(tool_id);
 
-CREATE INDEX idx_stock_s_loc_id
+CREATE INDEX IF NOT EXISTS idx_stock_s_loc_id
   ON stock_tools(storage_loc_id);

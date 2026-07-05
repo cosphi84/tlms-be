@@ -21,6 +21,6 @@ CREATE TABLE IF NOT EXISTS users (
     deleted_by BIGINT NULL REFERENCES users(id)
 );
 
-CREATE INDEX idx_users_email ON users(email);
-CREATE INDEX idx_users_office_id ON users(office_id);
-CREATE INDEX idx_users_is_active ON users(is_active);
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_users_office_id ON users(office_id);
+CREATE INDEX IF NOT EXISTS idx_users_is_active ON users(is_active);

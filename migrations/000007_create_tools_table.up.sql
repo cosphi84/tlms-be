@@ -28,17 +28,17 @@ CREATE TABLE IF NOT EXISTS tools (
       deleted_by BIGINT NULL REFERENCES users(id)
 );
 
-CREATE INDEX idx_tools_code
+CREATE INDEX IF NOT EXISTS idx_tools_code
   ON tools(code);
 
-CREATE INDEX idx_tools_name
+CREATE INDEX IF NOT EXISTS idx_tools_name
   ON tools(name);
 
-CREATE INDEX idx_tools_category
+CREATE INDEX IF NOT EXISTS idx_tools_category
   ON tools(category);
 
-CREATE INDEX idx_tools_photo_id
+CREATE INDEX IF NOT EXISTS idx_tools_photo_id
   ON tools(photo_id);
 
-CREATE INDEX idx_tools_is_active
+CREATE INDEX IF NOT EXISTS idx_tools_is_active
 ON tools(is_active);

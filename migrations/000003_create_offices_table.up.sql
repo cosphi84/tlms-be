@@ -29,5 +29,5 @@ CREATE TABLE IF NOT EXISTS offices (
     deleted_by INTEGER NULL
 );
 
-CREATE INDEX idx_offices_code ON offices(code);
-CREATE INDEX idx_offices_parent_id ON offices(parent_id);
+CREATE INDEX IF NOT EXISTS idx_offices_code ON offices(code);
+CREATE INDEX IF NOT EXISTS idx_offices_parent_id ON offices(parent_id);
