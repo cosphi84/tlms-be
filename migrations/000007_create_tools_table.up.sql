@@ -23,8 +23,9 @@ CREATE TABLE tools (
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       updated_at TIMESTAMPTZ NULL,
       deleted_at TIMESTAMPTZ NULL,
-      created_by INTEGER NULL REFERENCES users(id),
-      updated_by INTEGER NULL REFERENCES users(id)
+      created_by BIGINT NULL REFERENCES users(id),
+      updated_by BIGINT NULL REFERENCES users(id),
+      deleted_by BIGINT NULL REFERENCES users(id)
 );
 
 CREATE INDEX idx_tools_code
