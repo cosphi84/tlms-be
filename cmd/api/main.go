@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"os"
 	"tlms/internal/bootstraps"
 	"tlms/internal/database"
 	"tlms/internal/routes"
@@ -12,6 +14,10 @@ import (
 
 func main() {
 	_ = godotenv.Load()
+	port := os.Getenv("APP_PORT")
+	if port == "" {
+		panic("APP_PORT is not set")
+	}
 
 	db, err := database.Connect()
 	if err != nil {
@@ -24,7 +30,7 @@ func main() {
 
 	routes.SetupRoutes(r, app)
 
-	if err := r.Run(":2323"); err != nil {
+	if err := r.Run(fmt.Sprintf(":%s", port)); err != nil {
 		log.Fatal(err)
 	}
 
