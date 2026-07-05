@@ -14,7 +14,8 @@ import (
 type OfficeService interface {
 	CreateHQ() error
 	CreateOffice(req dto.CreateOfficeRequest, ctx context.Context) error
-	GetOffices(pagination *dto.PaginationRequest) (*dto.PaginationResponse, error)
+	GetOffices() ([]models.Office, error)
+	//GetOffices(pagination *dto.PaginationRequest) (*dto.PaginationResponse, error)
 	GetOfficeOptions() ([]dto.OfficeOptionResponse, error)
 	GetOffice(id int64) (*models.Office, error)
 	UpdateOffice(id int64, req dto.UpdateOfficeRequest, ctx context.Context) error
@@ -86,8 +87,8 @@ func (s *officeService) CreateOffice(req dto.CreateOfficeRequest, ctx context.Co
 	return s.officeRepo.CreateChild(&newOffice, parent)
 }
 
-func (s *officeService) GetOffices(pagination *dto.PaginationRequest) (*dto.PaginationResponse, error) {
-	return s.officeRepo.FindAll(pagination)
+func (s *officeService) GetOffices() ([]models.Office, error) {
+	return s.officeRepo.FindAll()
 }
 
 func (s *officeService) GetOfficeOptions() ([]dto.OfficeOptionResponse, error) {

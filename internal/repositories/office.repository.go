@@ -15,7 +15,8 @@ type OfficeRepository interface {
 	CreateChild(office *models.Office, parentOffice *models.Office) error
 	FindById(id int64) (*models.Office, error)
 	FindByCode(code string) (*models.Office, error)
-	FindAll(pagination *dto.PaginationRequest) (*dto.PaginationResponse, error)
+	FindAll() ([]models.Office, error)
+	//FindAll(pagination *dto.PaginationRequest) (*dto.PaginationResponse, error)
 	FindOffices() ([]dto.OfficeOptionResponse, error)
 	Update(office *models.Office) error
 	Delete(id int64) error
@@ -95,6 +96,7 @@ func (repos *officeRepository) FindByCode(code string) (*models.Office, error) {
 	return &office, nil
 }
 
+/*
 func (repos *officeRepository) FindAll(pagination *dto.PaginationRequest) (*dto.PaginationResponse, error) {
 	var offices []models.Office
 
@@ -103,6 +105,19 @@ func (repos *officeRepository) FindAll(pagination *dto.PaginationRequest) (*dto.
 		Order(fmt.Sprintf("%s %s", pagination.SortedBy, pagination.SortDir))
 
 	return Paginate(&offices, pagination, baseQuery)
+}
+*/
+
+func (repos *officeRepository) FindAll() ([]models.Office, error) {
+	var offices []models.Office
+
+	err := repos.db.Model(&models.Office{}).
+		Where("deleted_at IS NULL").
+		Find(&offices).Error
+	if err != nil {
+		return nil, err
+	}
+	return offices, nil
 }
 
 func (repos *officeRepository) FindOffices() ([]dto.OfficeOptionResponse, error) {

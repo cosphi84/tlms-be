@@ -52,9 +52,9 @@ func (h *OfficeHandler) Create(c *gin.Context) {
 // @Success      200  {object}  dto.PaginationResponse
 // @Router       /offices [get]
 func (h *OfficeHandler) FindAll(c *gin.Context) {
-	pagination := helpers.ParsePaginationQuery(c)
+	//pagination := helpers.ParsePaginationQuery(c)
 
-	result, err := h.officeService.GetOffices(pagination)
+	result, err := h.officeService.GetOffices()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
