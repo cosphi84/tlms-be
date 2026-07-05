@@ -27,6 +27,7 @@ func main() {
 	app := bootstraps.NewApp(db)
 
 	r := gin.Default()
+	r.SetTrustedProxies([]string{"127.0.0.1"})
 
 	routes.SetupRoutes(r, app)
 
