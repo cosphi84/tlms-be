@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS tools (
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
       code VARCHAR(255) NOT NULL UNIQUE,
       name VARCHAR(255) NOT NULL,
+      model VARCHAR(255) NOT NULL,
       description TEXT NULL,
       brand VARCHAR(255) NULL,
       category VARCHAR(100) NOT NULL DEFAULT 'primary'

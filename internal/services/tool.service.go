@@ -34,6 +34,7 @@ func bindToResponse(m *models.Tools) *dto.ToolsResponse {
 		Name:            m.Name,
 		Code:            m.Code,
 		Description:     m.Description,
+		Model:           m.Model,
 		Brand:           m.Brand,
 		Category:        m.Category,
 		PhotoID:         m.PhotoID,
@@ -62,10 +63,11 @@ func (s *toolsService) Create(req *dto.RegisterToolRequest, ctx context.Context)
 	tool := &models.Tools{
 		Code:        req.Code,
 		Name:        req.Name,
-		Description: &req.Description,
+		Description: req.Description,
 		Price:       req.Price,
 		PhotoID:     &req.PhotoID,
-		Brand:       &req.Brand,
+		Model:       req.Model,
+		Brand:       req.Brand,
 		CreatedBy:   &usr.UserID,
 		CreatedAt:   time.Now(),
 		IsActive:    true,
@@ -91,12 +93,13 @@ func (s *toolsService) Update(id uuid.UUID, req *dto.RegisterToolRequest, ctx co
 	now := time.Now()
 	tool.Code = req.Code
 	tool.Name = req.Name
-	tool.Description = &req.Description
-	tool.Brand = &req.Brand
+	tool.Description = req.Description
+	tool.Model = req.Model
+	tool.Brand = req.Brand
 	tool.Category = req.Category
 	tool.Price = req.Price
 	tool.PhotoID = &req.PhotoID
-	tool.Brand = &req.Brand
+	tool.Brand = req.Brand
 	tool.UpdatedBy = &usr.UserID
 	tool.UpdatedAt = &now
 	return s.toolsRepos.Update(tool)

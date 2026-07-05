@@ -11,8 +11,9 @@ type Tools struct {
 	ID              uuid.UUID            `gorm:"type:uuid;default:gen_random_uuid();primaryKey" json:"id"`
 	Code            string               `gorm:"type:varchar(255);unique;not null;index:idx_tools_code" json:"code"`
 	Name            string               `gorm:"type:varchar(255);not null;index:idx_tools_name" json:"name"`
-	Description     *string              `gorm:"type:text" json:"description,omitempty"`
-	Brand           *string              `gorm:"type:varchar(255)" json:"brand,omitempty"`
+	Description     string               `gorm:"type:text" json:"description,omitempty"`
+	Model           string               `gorm:"type:varchar(255);not null" json:"model"`
+	Brand           string               `gorm:"type:varchar(255)" json:"brand,omitempty"`
 	Category        ToolsCategory        `gorm:"type:varchar(100);not null;default:'primary';index:idx_tools_category" json:"category"`
 	Price           float64              `gorm:"type:numeric(18,2);not null;default:0" json:"price"`
 	UsagePeriod     int32                `gorm:"type:int;not null;default:1" json:"usage_period"`
