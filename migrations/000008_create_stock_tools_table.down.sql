@@ -1,4 +1,4 @@
-DELETE INDEX IF EXISTS idx_stock_tools_id;
-DELETE INDEX IF EXISTS idx_stock_s_loc_id;
+DROP INDEX IF EXISTS idx_stock_tools_id;
+DROP INDEX IF EXISTS idx_stock_s_loc_id;
 
-DELETE TABLE stock_tools;
+DROP TABLE stock_tools;
