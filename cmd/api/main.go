@@ -24,7 +24,7 @@ func main() {
 	} else {
 		gin.SetMode(gin.DebugMode)
 	}
-	
+
 	db, err := database.Connect()
 	if err != nil {
 		log.Fatal(err)
