@@ -33,5 +33,5 @@ type Tools struct {
 }
 
 func (Tools) TableName() string {
-	return "master_tools"
+	return "tools"
 }
