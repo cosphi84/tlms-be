@@ -1,4 +1,4 @@
-CREATE TABLE stock_tools (
+CREATE TABLE IF NOT EXISTS stock_tools (
           id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
           tool_id UUID NOT NULL REFERENCES tools(id),

@@ -1,4 +1,4 @@
-CREATE TABLE upload_files (
+CREATE TABLE IF NOT EXISTS upload_files (
               id BIGSERIAL PRIMARY KEY,
               uuid UUID NOT NULL DEFAULT gen_random_uuid(),
 

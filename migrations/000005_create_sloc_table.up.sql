@@ -1,4 +1,4 @@
-CREATE TABLE storage_locations (
+CREATE TABLE IF NOT EXISTS storage_locations (
     id BIGSERIAL PRIMARY KEY,
     code VARCHAR(255) NOT NULL UNIQUE,
     name VARCHAR(255) NOT NULL,

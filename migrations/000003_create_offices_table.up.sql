@@ -1,4 +1,4 @@
-CREATE TABLE offices (
+CREATE TABLE IF NOT EXISTS offices (
     id BIGSERIAL PRIMARY KEY,
     parent_id BIGINT NULL REFERENCES offices(id)
                      ON DELETE RESTRICT,

@@ -1,4 +1,4 @@
-CREATE TABLE casbin_rule
+CREATE TABLE IF NOT EXISTS casbin_rule
 (
     id BIGSERIAL PRIMARY KEY,
 
