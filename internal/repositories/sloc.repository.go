@@ -43,7 +43,7 @@ func (r *slocRepository) FindById(id int64) (*models.StorageLocation, error) {
 
 func (r *slocRepository) FindByCode(code string) (*models.StorageLocation, error) {
 	var loc models.StorageLocation
-	err := r.db.Where("code=?", code).First(&loc).Error
+	err := r.db.Preload("Office").Where("code=?", code).First(&loc).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, nil
@@ -56,6 +56,7 @@ func (r *slocRepository) FindByCode(code string) (*models.StorageLocation, error
 func (r *slocRepository) FindAll(paginate *dto.PaginationRequest) (*dto.PaginationResponse, error) {
 	var slocs []models.StorageLocation
 	query := r.db.Model(&models.StorageLocation{}).
+		Preload("Office").
 		Where("deleted_at IS NULL").
 		Order(fmt.Sprintf("%s %s", paginate.SortedBy, paginate.SortDir))
 	return Paginate(&slocs, paginate, query)
