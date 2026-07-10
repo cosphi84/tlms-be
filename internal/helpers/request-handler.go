@@ -22,6 +22,7 @@ func ParsePaginationQuery(c *gin.Context) *dto.PaginationRequest {
 	return &dto.PaginationRequest{
 		Page:     page,
 		Limit:    limit,
+		Search:   c.Query("search"),
 		SortedBy: c.DefaultQuery("sorted_by", "created_at"),
 		SortDir:  c.DefaultQuery("sort_dir", "desc"),
 	}

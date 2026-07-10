@@ -57,8 +57,15 @@ func (r *slocRepository) FindAll(paginate *dto.PaginationRequest) (*dto.Paginati
 	var slocs []models.StorageLocation
 	query := r.db.Model(&models.StorageLocation{}).
 		Preload("Office").
-		Where("deleted_at IS NULL").
-		Order(fmt.Sprintf("%s %s", paginate.SortedBy, paginate.SortDir))
+		Where("storage_locations.deleted_at IS NULL")
+
+	if paginate.Search != "" {
+		searchTerm := "%" + paginate.Search + "%"
+		query = query.Joins("LEFT JOIN offices ON offices.id = storage_locations.office_id").
+			Where("storage_locations.code ILIKE ? OR storage_locations.name ILIKE ? OR offices.name ILIKE ?", searchTerm, searchTerm, searchTerm)
+	}
+
+	query = query.Order(fmt.Sprintf("storage_locations.%s %s", paginate.SortedBy, paginate.SortDir))
 	return Paginate(&slocs, paginate, query)
 }
 
